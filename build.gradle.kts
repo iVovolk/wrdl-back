@@ -1,3 +1,6 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
@@ -11,6 +14,7 @@ plugins {
     kotlin("jvm") version "1.6.10"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.6.10"
     id("org.flywaydb.flyway") version "8.4.3"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "club.liefuck.api"
@@ -42,4 +46,14 @@ dependencies {
 
 flyway {
     locations = arrayOf("filesystem:resources/db/migration")
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "17"
+}
+
+tasks.withType<ShadowJar> {
+    archiveBaseName.set("wrdl")
+    archiveClassifier.set("")
+    archiveVersion.set("")
 }
