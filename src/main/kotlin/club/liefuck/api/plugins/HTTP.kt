@@ -31,10 +31,14 @@ fun Application.configureHTTP() {
             host(appConfig.property("ktor.httpHost").getString(), schemes = listOf("https"))
         }
     }
-    install(DefaultHeaders) {
+    install(DefaultHeaders)
+
+    if (IS_PROD) {
+        install(ForwardedHeaderSupport)
+        install(XForwardedHeaderSupport)
     }
+
     install(HSTS) {
         includeSubDomains = true
     }
-
 }
